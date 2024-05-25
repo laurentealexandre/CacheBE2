@@ -29,8 +29,8 @@ const update = async (cliente) => {
     const [result] = await (await connection).execute(query, [cliente.Nome, cliente.Sobrenome, cliente.Email, cliente.Idade, cliente.ID]);
 
     if (result.affectedRows === 1) {
-      cache.del('allClients'); // Invalidar o cache
-      logger.info('Updated database and invalidated cache');
+      invalidateCache(); // Chamada para invalidar o cache
+      logger.info('Bd atualizado e cache invalidado');
     }
 
     return result.affectedRows === 1;
@@ -46,8 +46,8 @@ const save = async (cliente) => {
     const [result] = await (await connection).execute(query, [cliente.Nome, cliente.Sobrenome, cliente.Email, cliente.Idade]);
 
     if (result.affectedRows === 1) {
-      cache.del('allClients'); // Invalidar o cache
-      logger.info('Inserted into database and invalidated cache');
+      invalidateCache(); // Chamada para invalidar o cache
+      logger.info('Adicionado ao BD e cache invalidado');
     }
 
     return result.affectedRows === 1;
@@ -63,8 +63,8 @@ const remove = async (id) => {
     const [result] = await (await connection).execute(query, [id]);
 
     if (result.affectedRows === 1) {
-      cache.del('allClients'); // Invalidar o cache
-      logger.info('Deleted from database and invalidated cache');
+      invalidateCache(); // Chamada para invalidar o cache
+      logger.info('Deletado do BD e cache invalidado');
     }
 
     return result.affectedRows === 1;
@@ -72,6 +72,11 @@ const remove = async (id) => {
     logger.error(`Database error: ${error.message}`);
     throw new Error('Internal Server Error');
   }
+};
+
+// Função para invalidar o cache
+const invalidateCache = () => {
+  cache.del('allClients');
 };
 
 module.exports = {
