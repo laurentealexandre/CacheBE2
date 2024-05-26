@@ -29,7 +29,7 @@ const update = async (cliente) => {
     const [result] = await (await connection).execute(query, [cliente.Nome, cliente.Sobrenome, cliente.Email, cliente.Idade, cliente.ID]);
 
     if (result.affectedRows === 1) {
-      invalidateCache(); // Chamada para invalidar o cache
+      invalidateCache(); 
       logger.info('Bd atualizado e cache invalidado');
     }
 
@@ -46,7 +46,7 @@ const save = async (cliente) => {
     const [result] = await (await connection).execute(query, [cliente.Nome, cliente.Sobrenome, cliente.Email, cliente.Idade]);
 
     if (result.affectedRows === 1) {
-      invalidateCache(); // Chamada para invalidar o cache
+      invalidateCache(); 
       logger.info('Adicionado ao BD e cache invalidado');
     }
 
@@ -63,7 +63,7 @@ const remove = async (id) => {
     const [result] = await (await connection).execute(query, [id]);
 
     if (result.affectedRows === 1) {
-      invalidateCache(); // Chamada para invalidar o cache
+      invalidateCache(); 
       logger.info('Deletado do BD e cache invalidado');
     }
 
@@ -74,7 +74,7 @@ const remove = async (id) => {
   }
 };
 
-// Função para invalidar o cache
+
 const invalidateCache = () => {
   cache.del('allClients');
 };
